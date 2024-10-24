@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import React, { useEffect, useState } from 'react';
 import {
     Table,
     TableBody,
@@ -10,21 +12,34 @@ import {
   } from "@/components/ui/table"
 import posts from '@/data/posts';
 import Link from 'next/link';
-import { Post } from '@/types/posts';
-
+import { NewPost, Post } from '@/types/posts';
+import axios from "axios";
 
   interface PostsTableProps {
     limit?: number;
     title?: string;
   }
 const PostsTable = ({limit, title}: PostsTableProps) => {
+const [allPosts, setAllPosts] = useState<NewPost[]>([]);
+
+const getAllPosts =async () => {
+  const response = await axios.get("/api/post");
+  setAllPosts(response.data.posts);
+  console.log(response.data.posts);
+  
+}
+
+useEffect(()=> {
+  getAllPosts();
+},[])
+
     // Sort posts in dec order based on date
-  const sortedPosts: Post[] = [...posts].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  //const sortedPosts: Post[] = [...posts].sort(
+  //  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  //);
 
   // Filter posts to limit
-  const filteredPosts = limit ? sortedPosts.slice(0, limit) : sortedPosts;
+  //const filteredPosts = limit ? sortedPosts.slice(0, limit) : sortedPosts;
 
   return (
     <div className='mt-10'>
@@ -44,12 +59,12 @@ const PostsTable = ({limit, title}: PostsTableProps) => {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {filteredPosts.map((post)=>(
-<TableRow key={post.id}>
+                {allPosts.map((post)=>(
+<TableRow key={post._id}>
     <TableCell>{post.title}</TableCell>
     <TableCell className='hidden md:table-cell'>{post.author}</TableCell>
-    <TableCell className='hidden md:table-cell text-right'>{post.date}</TableCell>
-    <TableCell> <Link href={`/posts/edit/${post.id}`}><button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs'>Edit</button></Link></TableCell>
+    <TableCell className='hidden md:table-cell text-right'>{new Date(post.createdAt).toLocaleDateString()}</TableCell>
+    <TableCell> <Link href={`/posts/edit/${post._id}`}><button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-xs'>Edit</button></Link></TableCell>
 </TableRow>
                 ))}
             </TableBody>

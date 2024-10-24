@@ -12,3 +12,12 @@ export interface PostComment{
     text: string;
     username: string;
 }
+
+export interface NewPost{
+    _id: string;
+    title: string;
+    body: string;
+    author: string;
+    createdAt: string;
+    updatedAt: string;
+}
