@@ -39,6 +39,17 @@ export async function DELETE(request, response) {
   return NextResponse.json({ msg: "Deleted successfully" });
 }
 
+
+export async function PUT(request, response) {
+  const id = request.nextUrl.searchParams.get("id");
+  const updatePost = await request.json()
+  await Post.findByIdAndUpdate(id, 
+updatePost
+  )
+  return NextResponse.json({ msg: "Updated successfully" });
+}
+
+
 /*
 export async function PUT (request, response) {
     //ConnectDB();

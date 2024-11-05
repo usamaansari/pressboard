@@ -15,8 +15,9 @@ export default function Home() {
     <DashboardCard title="Users" count={750} icon={<User className="text-slate-500" size={72}/>}/>
     <DashboardCard title="Categories" count={12} icon={<Folder className="text-slate-500" size={72}/>}/>
     <DashboardCard title="Comments" count={113} icon={<MessageCircle className="text-slate-500" size={72}/>}/>
-  
+  {/* 
     <Button variant="destructive" size="lg"> Click Me</Button>
+    */}
    </div>
    <AnalyticsChart />
 
